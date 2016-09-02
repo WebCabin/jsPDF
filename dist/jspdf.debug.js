@@ -1,7 +1,7 @@
 /** @preserve
  * jsPDF - PDF Document creation from JavaScript
- * Version 1.2.61-git Built on 2016-09-01T18:10
- *                           CommitID 76edb3387c
+ * Version 1.2.61-git Built on 2016-09-01T18:21
+ *                           CommitID 579c6eaf73
  *
  * Copyright (c) 2010-2014 James Hall <james@parall.ax>, https://github.com/MrRio/jsPDF
  *               2010 Aaron Spike, https://github.com/acspike
@@ -385,6 +385,9 @@ var jsPDF = (function (global) {
                 // this is mapping structure for quick font key lookup.
                 // returns the KEY of the font (ex: "F1") for a given
                 // pair of font name and type (ex: "Arial". "Italic")
+                // Enforcing lower case names as the keys.
+                fontName = fontName.toLowerCase();
+                fontStyle = fontStyle && fontStyle.toLowerCase();
                 if (!fontmap.hasOwnProperty(fontName)) {
                     fontmap[fontName] = {};
                 }
@@ -443,7 +446,7 @@ var jsPDF = (function (global) {
                         ['Times-Bold', TIMES, BOLD],
                         ['Times-Italic', TIMES, ITALIC],
                         ['Times-BoldItalic', TIMES, BOLD_ITALIC],
-                        ['ZapfDingbats',ZAPF ]
+                        ['ZapfDingbats', ZAPF]
                     ];
 
                 for (var i = 0, l = standardFonts.length; i < l; i++) {
@@ -799,32 +802,8 @@ var jsPDF = (function (global) {
             getFont = function (fontName, fontStyle) {
                 var key;
 
-                fontName = fontName !== undefined ? fontName : fonts[activeFontKey].fontName;
-                fontStyle = fontStyle !== undefined ? fontStyle : fonts[activeFontKey].fontStyle;
-
-			if (fontName !== undefined){
-				fontName = fontName.toLowerCase();
-			}
-			switch(fontName){
-			case 'sans-serif':
-			case 'verdana':
-			case 'arial':
-			case 'helvetica':
-				fontName = 'helvetica';
-				break;
-			case 'fixed':
-			case 'monospace':
-			case 'terminal':
-			case 'courier':
-				fontName = 'courier';
-				break;
-			case 'serif':
-			case 'cursive':
-			case 'fantasy':
-				default:
-				fontName = 'times';
-				break;
-			}
+                fontName = (fontName !== undefined ? fontName : fonts[activeFontKey].fontName).toLowerCase();
+                fontStyle = (fontStyle !== undefined ? fontStyle : fonts[activeFontKey].fontStyle).toLowerCase();
 
                 try {
                     // get a string like 'F3' - the KEY corresponding tot he font + type combination.
@@ -2087,7 +2066,7 @@ var jsPDF = (function (global) {
      * pdfdoc.mymethod() // <- !!!!!!
      */
     jsPDF.API = {events: []};
-    jsPDF.version = "1.2.61-debug 2016-09-01T18:10:outwardjhoude";
+    jsPDF.version = "1.2.61-debug 2016-09-01T18:21:outwardjhoude";
 
     if (typeof define === 'function' && define.amd) {
         define('jsPDF', function () {
